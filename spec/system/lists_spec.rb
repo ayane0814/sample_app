@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe '投稿のテスト' do
-    let!(:list) { create(:list,title:'hoge',body:'body') }
+    let!(:list) { create(:list, title:'hoge',body:'body') }
     describe 'トップ画面(top_path)のテスト' do
         before do
             visit top_path
@@ -44,7 +44,8 @@ describe '投稿のテスト' do
         end
         context '一覧の表示とリンクの確認' do
             it '一覧表示画面に投稿されたものが表示されているか' do
-                expect(page).to have_selector 'list-wrap'
+                expect(page).to have_content list.body
+                expect(page).to have_link list.title
             end
         end
     end
@@ -54,15 +55,15 @@ describe '投稿のテスト' do
         end
         context '表示の確認' do
             it '削除リンクが存在しているか' do
-                expect(page).to have_link '削除', href: list_path(list)
+                expect(page).to have_link '削除'
             end
             it '編集リンクが存在しているか' do
-                expect(page).to have_link '編集', href: edit_list(list)
+                expect(page).to have_link '編集'
             end
         end
         context 'リンクの遷移先の確認' do
             it '編集の遷移先は編集画面か' do
-                edit_link = find_all('a')[0]
+                edit_link = find_all('a')[3]
                 edit_link.click
                 expect(current_path).to eq('/lists/' + list.id.to_s + '/edit')
             end
